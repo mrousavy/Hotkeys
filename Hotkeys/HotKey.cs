@@ -3,7 +3,7 @@ using System.Windows;
 using System.Windows.Input;
 using System.Windows.Interop;
 
-namespace Hotkeys {
+namespace mrousavy {
     public sealed class HotKey : IDisposable {
         private readonly IntPtr _handle;
 
