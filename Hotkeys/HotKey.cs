@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Runtime.InteropServices;
 using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Input;
@@ -12,6 +13,9 @@ namespace mrousavy {
 
         private bool _isKeyRegistered;
 
+        [DllImport("user32.dll")]
+        static extern IntPtr GetForegroundWindow();
+
         public HotKey(ModifierKeys modifierKeys, Key key, Window window, Action<HotKey> onKeyAction)
             : this(modifierKeys, key, new WindowInteropHelper(window), onKeyAction) {
         }
@@ -24,7 +28,7 @@ namespace mrousavy {
             Key = key;
             KeyModifier = modifierKeys;
             _id = GetHashCode();
-            _handle = windowHandle;
+            _handle = windowHandle == IntPtr.Zero ? windowHandle : GetForegroundWindow();
             RegisterHotKey();
             ComponentDispatcher.ThreadPreprocessMessage += ThreadPreprocessMessageMethod;
 
