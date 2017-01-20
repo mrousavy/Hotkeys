@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Input;
 using System.Windows.Interop;
@@ -11,15 +12,15 @@ namespace mrousavy {
 
         private bool _isKeyRegistered;
 
-        public HotKey(ModifierKeys modifierKeys, Key key, Window window, Action<HotKey> OnHotKeyPressed)
-            : this(modifierKeys, key, new WindowInteropHelper(window), OnHotKeyPressed) {
+        public HotKey(ModifierKeys modifierKeys, Key key, Window window, Action<HotKey> onKeyAction)
+            : this(modifierKeys, key, new WindowInteropHelper(window), onKeyAction) {
         }
 
-        public HotKey(ModifierKeys modifierKeys, Key key, WindowInteropHelper window, Action<HotKey> OnHotKeyPressed)
-            : this(modifierKeys, key, window.Handle, OnHotKeyPressed) {
+        public HotKey(ModifierKeys modifierKeys, Key key, WindowInteropHelper window, Action<HotKey> onKeyAction)
+            : this(modifierKeys, key, window.Handle, onKeyAction) {
         }
 
-        public HotKey(ModifierKeys modifierKeys, Key key, IntPtr windowHandle, Action<HotKey> OnHotKeyPressed) {
+        public HotKey(ModifierKeys modifierKeys, Key key, IntPtr windowHandle, Action<HotKey> onKeyAction) {
             Key = key;
             KeyModifier = modifierKeys;
             _id = GetHashCode();
@@ -27,7 +28,7 @@ namespace mrousavy {
             RegisterHotKey();
             ComponentDispatcher.ThreadPreprocessMessage += ThreadPreprocessMessageMethod;
 
-            OnHotKeyPressed += OnHotKeyPressed;
+            HotKeyPressed += onKeyAction;
         }
 
         ~HotKey() {
@@ -40,19 +41,24 @@ namespace mrousavy {
 
         public ModifierKeys KeyModifier { get; private set; }
 
-        private int InteropKey {
-            get {
-                return KeyInterop.VirtualKeyFromKey(Key);
+        private int InteropKey => KeyInterop.VirtualKeyFromKey(Key);
+
+        public void Dispose() {
+            try {
+                ComponentDispatcher.ThreadPreprocessMessage -= ThreadPreprocessMessageMethod;
+            } catch(Exception) {
+                // ignored
+            } finally {
+                UnregisterHotKey();
             }
         }
 
-        public void Dispose() {
-            ComponentDispatcher.ThreadPreprocessMessage -= ThreadPreprocessMessageMethod;
-            UnregisterHotKey();
-        }
-
         private void OnHotKeyPressed() {
-            HotKeyPressed?.Invoke(this);
+            Task.Factory.StartNew(
+                delegate {
+                    HotKeyPressed?.Invoke(this);
+                },
+                TaskCreationOptions.LongRunning);
         }
 
         private void RegisterHotKey() {

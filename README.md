@@ -14,10 +14,11 @@ HotKey(ModifierKeys modifierKeys, Key key, Window window, Action<HotKey> OnHotKe
 Example _(C#, in a WPF Application)_:
 ```C#
 var key = new HotKey(
-    ModifierKeys.Control, 
+    (ModifierKeys.Control | ModifierKeys.Alt), 
     Key.S, 
     this, 
     delegate {
-        MessageBox.Show("Ctrl + S was pressed!");
-});
+        MessageBox.Show("Ctrl + Alt + S was pressed!");
+    }
+);
 ```
