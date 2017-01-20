@@ -40,11 +40,7 @@ namespace mrousavy {
 
         public ModifierKeys KeyModifier { get; private set; }
 
-        private int InteropKey {
-            get {
-                return KeyInterop.VirtualKeyFromKey(Key);
-            }
-        }
+        private int InteropKey => KeyInterop.VirtualKeyFromKey(Key);
 
         public void Dispose() {
             ComponentDispatcher.ThreadPreprocessMessage -= ThreadPreprocessMessageMethod;
