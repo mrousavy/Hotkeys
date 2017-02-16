@@ -1,4 +1,4 @@
-# <img src="https://github.com/mrousavy/Hotkeys/blob/master/Downloads/Hotkeys.dll?raw=true" width="42"> Hotkeys
+# <img src="https://github.com/mrousavy/Hotkeys/blob/master/Images/Logo.png?raw=true" width="42"> Hotkeys
 A small C# Library which allows binding (and unbinding) of global Hotkeys, even when application is not Focused/Activated or in Background (using P/Invokes)
 
 [Download the Library (.dll)](https://raw.githubusercontent.com/mrousavy/Hotkeys/master/Downloads/Hotkeys.dll)
