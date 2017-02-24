@@ -16,6 +16,14 @@ namespace mrousavy {
         [DllImport("user32.dll")]
         static extern IntPtr GetForegroundWindow();
 
+        public HotKey(ModifierKeys modifierKeys, Key key, Window window)
+            : this(modifierKeys, key, new WindowInteropHelper(window), null) {
+        }
+
+        public HotKey(ModifierKeys modifierKeys, Key key, WindowInteropHelper window)
+            : this(modifierKeys, key, window.Handle, null) {
+        }
+
         public HotKey(ModifierKeys modifierKeys, Key key, Window window, Action<HotKey> onKeyAction)
             : this(modifierKeys, key, new WindowInteropHelper(window), onKeyAction) {
         }
@@ -24,7 +32,7 @@ namespace mrousavy {
             : this(modifierKeys, key, window.Handle, onKeyAction) {
         }
 
-        public HotKey(ModifierKeys modifierKeys, Key key, IntPtr windowHandle, Action<HotKey> onKeyAction) {
+        public HotKey(ModifierKeys modifierKeys, Key key, IntPtr windowHandle, Action<HotKey> onKeyAction = null) {
             Key = key;
             KeyModifier = modifierKeys;
             _id = GetHashCode();
@@ -32,7 +40,8 @@ namespace mrousavy {
             RegisterHotKey();
             ComponentDispatcher.ThreadPreprocessMessage += ThreadPreprocessMessageMethod;
 
-            HotKeyPressed += onKeyAction;
+            if(onKeyAction != null)
+                HotKeyPressed += onKeyAction;
         }
 
         ~HotKey() {
@@ -77,7 +86,7 @@ namespace mrousavy {
             _isKeyRegistered = HotKeyWinApi.RegisterHotKey(_handle, _id, KeyModifier, InteropKey);
 
             if(!_isKeyRegistered) {
-                throw new ApplicationException("Hotkey already in use");
+                throw new ApplicationException("An unexpected Error occured! (Hotkey may already be in use)");
             }
         }
 
