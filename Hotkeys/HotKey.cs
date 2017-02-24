@@ -1,9 +1,9 @@
 ﻿using System;
 using System.Runtime.InteropServices;
-using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Input;
 using System.Windows.Interop;
+using System.Windows.Threading;
 
 namespace mrousavy {
     public sealed class HotKey : IDisposable {
@@ -12,6 +12,8 @@ namespace mrousavy {
         private readonly int _id;
 
         private bool _isKeyRegistered;
+
+        private Dispatcher _currentDispatcher;
 
         [DllImport("user32.dll")]
         static extern IntPtr GetForegroundWindow();
@@ -37,6 +39,7 @@ namespace mrousavy {
             KeyModifier = modifierKeys;
             _id = GetHashCode();
             _handle = windowHandle == IntPtr.Zero ? GetForegroundWindow() : windowHandle;
+            _currentDispatcher = Dispatcher.CurrentDispatcher;
             RegisterHotKey();
             ComponentDispatcher.ThreadPreprocessMessage += ThreadPreprocessMessageMethod;
 
@@ -67,11 +70,10 @@ namespace mrousavy {
         }
 
         private void OnHotKeyPressed() {
-            Task.Factory.StartNew(
+            _currentDispatcher.Invoke(
                 delegate {
                     HotKeyPressed?.Invoke(this);
-                },
-                TaskCreationOptions.LongRunning);
+                });
         }
 
         private void RegisterHotKey() {
