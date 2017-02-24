@@ -36,7 +36,7 @@ namespace mrousavy {
             Key = key;
             KeyModifier = modifierKeys;
             _id = GetHashCode();
-            _handle = windowHandle == IntPtr.Zero ? windowHandle : GetForegroundWindow();
+            _handle = windowHandle == IntPtr.Zero ? GetForegroundWindow() : windowHandle;
             RegisterHotKey();
             ComponentDispatcher.ThreadPreprocessMessage += ThreadPreprocessMessageMethod;
 
