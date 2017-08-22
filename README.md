@@ -3,6 +3,8 @@ A small C# Library which allows binding (and unbinding) of global Hotkeys, even 
 
 [Download the Library (.dll)](https://raw.githubusercontent.com/mrousavy/Hotkeys/master/Downloads/Hotkeys.dll)
 
+[![NuGet](https://img.shields.io/nuget/dt/GlobalHotkeys.svg)](https://www.nuget.org/packages/GlobalHotkeys/)
+
 # How to use:
 Add the `.dll` to your .NET Project's `References` Tree in the Solution View.
 
