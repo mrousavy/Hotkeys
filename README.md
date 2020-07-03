@@ -1,7 +1,6 @@
 # <img src="https://github.com/mrousavy/Hotkeys/blob/master/Images/Logo.png?raw=true" width="42"> Hotkeys
-A small C# Library which allows binding (and unbinding) of global Hotkeys, even when application is not Focused/Activated or in Background (using P/Invokes)
+A small C# (.NET) Library which allows binding of global HotKeys to any Application's Windows (including Windows Apps such as `explorer.exe`), even in Background. (using P/Invokes)
 
-[![NuGet](https://img.shields.io/nuget/dt/GlobalHotkeys.svg)](https://www.nuget.org/packages/GlobalHotkeys/) 
 
 # Install
 
@@ -10,8 +9,10 @@ Install from [NuGet](https://www.nuget.org/packages/GlobalHotkeys)
 ```
 Install-Package GlobalHotkeys
 ```
+[![NuGet](https://img.shields.io/nuget/dt/GlobalHotkeys.svg)](https://www.nuget.org/packages/GlobalHotkeys/) 
 
 > _(or [download the Library (.dll)](https://raw.githubusercontent.com/mrousavy/Hotkeys/master/Downloads/Hotkeys.dll) manually)_
+
 
 <a href='https://ko-fi.com/F1F8CLXG' target='_blank'><img height='36' style='border:0px;height:36px;' src='https://az743702.vo.msecnd.net/cdn/kofi2.png?v=0' border='0' alt='Buy Me a Coffee at ko-fi.com' /></a>
 
