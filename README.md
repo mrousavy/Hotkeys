@@ -26,7 +26,7 @@ var key = new HotKey(
     (ModifierKeys.Control | ModifierKeys.Alt), 
     Key.S, 
     this, 
-    () => {
+    (hotkey) => {
         MessageBox.Show("Ctrl + Alt + S was pressed!");
     }
 );
